@@ -1,0 +1,32 @@
+{
+    "name": "anasstouaticoder/magento2-module-multi-store-run",
+    "description": "This module will simplify using multiple websites and store views in the same Magento instance.",
+    "keywords": [
+        "magento 2",
+        "MAGE_RUN_CODE",
+        "MAGE_RUN_TYPE",
+        "multi-storeview",
+        "multi-website"
+    ],
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anass TOUATI",
+            "email": "anass1touati@gmail.com",
+            "homepage": "https://www.linkedin.com/in/anass-touati-9a3b028b/",
+            "role": "Leader"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "AnassTouatiCoder\\MultiStoreRun\\": ""
+        }
+    }
+}
