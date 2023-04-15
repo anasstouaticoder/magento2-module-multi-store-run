@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2023
+ * MIT License
+ * Module AnassTouatiCoder_MultiStoreRun
+ * Author Anass TOUATI anass1touati@gmail.com
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="anasstouaticoder_multistore_run" translate="label" type="text" sortOrder="300" showInDefault="1"
+                 showInWebsite="0" showInStore="0">
+        <label>MultiStore Run</label>
+        <tab>anass_Touati_coder</tab>
+        <resource>AnassTouatiCoder_MultiStoreRun::anasstouaticoder_multistorerun</resource>
+            <group id="system_config" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>General</label>
+                <field id="your_field_id" translate="label" type="label" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Read Me</label>
+                    <frontend_model>AnassTouatiCoder\MultiStoreRun\Block\Adminhtml\System\Config\Wiki</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

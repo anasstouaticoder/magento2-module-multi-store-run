@@ -6,10 +6,11 @@
         "MAGE_RUN_CODE",
         "MAGE_RUN_TYPE",
         "multi-storeview",
-        "multi-website"
+        "multi-website",
+        "multi-domain"
     ],
     "type": "magento2-module",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": "MIT",
     "authors": [
         {
@@ -19,6 +20,11 @@
             "role": "Leader"
         }
     ],
+    "require": {
+        "anasstouaticoder/magento2-module-base": "^1",
+        "magento/framework": "*",
+        "php": "~7.0||~7.1||~7.2||~7.3||~7.4.0||~8.1||~8.2"
+    },
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
