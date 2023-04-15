@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace AnassTouatiCoder\MultiStoreRun\App;
 
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ObjectManagerFactory;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManager;
@@ -24,6 +25,9 @@ class RunStoreManager
     const CONFIG_SCOPE_ID = 'scope_id';
     const CONFIG_SCOPE= 'scope';
     const VALUE_SCOPE= 'value';
+
+    /** @var array  */
+    protected $initParams = [];
 
     /**
      * @var ObjectManager
@@ -49,15 +53,16 @@ class RunStoreManager
      * MAGE_RUN_CODE adjustments
      * MAGE_RUN_TYPE adjustments
      *
-     * @param $factory
-     * @param $deploymentConfig
-     * @param $initParams
+     * @param ObjectManagerFactory|null $factory
+     * @param array $initParams
      */
-    private function __construct($factory, $deploymentConfig, &$initParams)
+    private function __construct($factory, $initParams)
     {
-        $this->objectManager = $factory->create($initParams);
+        $this->initParams = $initParams;
+        $this->objectManager = $factory->create($this->initParams);
+        $deploymentConfig = $this->objectManager->get(\Magento\Framework\App\DeploymentConfig::class);
 
-        $scopeId = $this->retrieveId($this->getFullURL($initParams));
+        $scopeId = $this->retrieveId($this->getFullURL($this->initParams));
         $runCode = '';
 
         if ($scopeId !== false) {
@@ -65,50 +70,49 @@ class RunStoreManager
 
             $subDirectory = $this->prepareSubDirectory($this->baseURL);
             if ($this->baseURL && $subDirectory) {
-                $_SERVER['SCRIPT_NAME'] = "/{$subDirectory}/index.php";
-                $_SERVER['PHP_SELF'] = "/{$subDirectory}/index.php";
+                $this->initParams['SCRIPT_NAME'] = "/{$subDirectory}/index.php";
+                $this->initParams['PHP_SELF'] = "/{$subDirectory}/index.php";
             }
         } else {
             // Get admin frontName from env.php or config.php file
             $backendFrontName = $deploymentConfig->get('backend/frontName');
-            // Using strpos instead of contains to stay compatible with PHP 7
-            $subdomain = parse_url($initParams['REQUEST_URI'], PHP_URL_PATH);
+            // Using strpos instead of contains to stay compatible with old PHP versions
+            $subdomain = parse_url($this->initParams['REQUEST_URI'], PHP_URL_PATH);
             if (strpos($subdomain, '/' . $backendFrontName)!== false ||
-                strpos($_SERVER['SERVER_NAME'], 'admin')!== false) {
+                strpos($this->initParams['SERVER_NAME'], 'admin')!== false) {
                 $runCode = 'admin';
-            } else {
-                // if you don't want to manage default home page
-                // header('HTTP/1.0 404 Not Found');
-                // exit;
             }
+            // if you don't want to manage default home page
+            // else {
+
+            // header('HTTP/1.0 404 Not Found');
+            // exit;
+            //}
         }
+        $this->initParams[\Magento\Store\Model\StoreManager::PARAM_RUN_CODE] = $runCode ?: 'base';
+        $this->initParams[\Magento\Store\Model\StoreManager::PARAM_RUN_TYPE] = $this->scopeType ?: 'website';
 
-        $_SERVER[\Magento\Store\Model\StoreManager::PARAM_RUN_CODE] = $runCode ?: 'base';
-        $_SERVER[\Magento\Store\Model\StoreManager::PARAM_RUN_TYPE] = $this->scopeType ?: 'website';
-
-        $initParams = $_SERVER;
+        $_SERVER = $this->initParams;
     }
-
     /**
      * Main entry
      *
-     * @param $factory
-     * @param $deploymentConfig
-     * @param $initParams
+     * @param ObjectManagerFactory|null $factory
+     * @param array $initParams
      *
-     * @return RunStoreManager|null
+     * @return array
      */
-    public static function getInstance($factory, $deploymentConfig, &$initParams)
+    public static function getUpdatedInitParams($factory, $initParams)
     {
         if (self::$instance === null) {
-            self::$instance = new self($factory, $deploymentConfig, $initParams);
+            self::$instance = new self($factory, $initParams);
         }
 
-        return self::$instance;
+        return self::$instance->initParams;
     }
 
     /**
-     *
+     * Build full url from request
      *
      * @param array $initParams
      * @return string
@@ -117,13 +121,13 @@ class RunStoreManager
     {
         $requestedDomain = $initParams['HTTP_HOST'];
         $subdomain = parse_url($initParams['REQUEST_URI'], PHP_URL_PATH);
-        return $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://' . $requestedDomain . $subdomain;
+        return $initParams['HTTP_X_FORWARDED_PROTO'] . '://' . $requestedDomain . $subdomain;
     }
+
     /**
      * Get website code by id
      *
-     * @param int $websiteId
-     *
+     * @param int $id
      * @return string
      */
     protected function getCodeById($id)
@@ -146,8 +150,7 @@ class RunStoreManager
     /**
      * Retrieve Website ID from Database
      *
-     * @param $domain
-     * @param $requestedDomain
+     * @param string $domain
      * @return int
      */
     protected function retrieveId($domain)
@@ -183,8 +186,7 @@ class RunStoreManager
     /**
      * Prepare base URL for website
      *
-     * @param string $path
-     *
+     * @param string $baseURL
      * @return string
      */
     private function prepareSubDirectory($baseURL)

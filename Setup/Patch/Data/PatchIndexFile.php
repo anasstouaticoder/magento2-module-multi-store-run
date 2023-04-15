@@ -50,6 +50,11 @@ class PatchIndexFile implements DataPatchInterface, PatchVersionInterface
         return '1.0.0';
     }
 
+    /**
+     * In project main entry we swap Bootstrap declaration
+     *
+     * @return void
+     */
     private function modifyBootstrap()
     {
         $bootstrapPath = BP . '/pub/index.php';

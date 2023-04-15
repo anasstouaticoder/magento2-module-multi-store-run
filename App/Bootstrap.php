@@ -22,9 +22,7 @@ class Bootstrap extends MagentoBootstrap
         self::populateAutoloader($rootDir, $initParams);
         if ($factory === null) {
             $factory = self::createObjectManagerFactory($rootDir, $initParams);
-            $objectManager = $factory->create($initParams);
-            $deploymentConfig =$objectManager->get(\Magento\Framework\App\DeploymentConfig::class);
-            RunStoreManager::getInstance($factory, $deploymentConfig, $initParams);
+            $initParams = RunStoreManager::getUpdatedInitParams($factory, $initParams);
         }
         return new self($factory, $rootDir, $initParams);
     }

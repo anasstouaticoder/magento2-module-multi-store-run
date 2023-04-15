@@ -4,7 +4,6 @@
 
  - [Main Functionalities](#markdown-header-main-functionalities)
  - [Installation](#markdown-header-installation)
- - [Configuration](#markdown-header-configuration)
  - [Specifications](#markdown-header-specifications)
 
 ## Main Functionalities
@@ -31,12 +30,7 @@
  - apply database updates by running `php bin/magento setup:upgrade`\*
  - Flush the cache by running `php bin/magento cache:flush`
 
-
-## Configuration
-
-
-
-
 ## Specifications
-
-
+This module make creating subdirectory websites and storeveiws easier, when creating new website or storeview
+you do not need to create new subdirectory and new index.php file in /pub,
+the module detect the target website or storeview by adding its MAGE_RUN_CODE MAGE_RUN_TYPE in server variable then you will be redirected.
