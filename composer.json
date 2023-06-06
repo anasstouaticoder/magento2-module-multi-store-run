@@ -10,7 +10,7 @@
         "multi-domain"
     ],
     "type": "magento2-module",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "license": "MIT",
     "authors": [
         {
@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "anasstouaticoder/magento2-module-base": "^1",
+        "anasstouaticoder/magento2-module-base": "dev-master",
         "magento/framework": "*",
         "php": "~7.0||~7.1||~7.2||~7.3||~7.4.0||~8.1||~8.2"
     },
