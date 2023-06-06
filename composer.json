@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "anasstouaticoder/magento2-module-base": "dev-master",
+        "anasstouaticoder/magento2-module-base": "dev-main",
         "magento/framework": "*",
         "php": "~7.0||~7.1||~7.2||~7.3||~7.4.0||~8.1||~8.2"
     },
