@@ -121,7 +121,8 @@ class RunStoreManager
     {
         $requestedDomain = $initParams['HTTP_HOST'];
         $subdomain = parse_url($initParams['REQUEST_URI'], PHP_URL_PATH);
-        return $initParams['HTTP_X_FORWARDED_PROTO'] . '://' . $requestedDomain . $subdomain;
+
+        return ($initParams['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $requestedDomain . $subdomain;
     }
 
     /**
