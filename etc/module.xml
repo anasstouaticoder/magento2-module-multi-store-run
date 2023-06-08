@@ -10,10 +10,9 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="AnassTouatiCoder_MultiStoreRun">
-        <module name="AnassTouatiCoder_Base">
-            <sequence>
-                <module name="Magento_Framework"/>
-            </sequence>
-        </module>
+        <sequence>
+            <module name="AnassTouatiCoder_Base"/>
+            <module name="Magento_Framework"/>
+        </sequence>
     </module>
 </config>
