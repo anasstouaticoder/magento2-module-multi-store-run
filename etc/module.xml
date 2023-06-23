@@ -12,7 +12,6 @@
     <module name="AnassTouatiCoder_MultiStoreRun">
         <sequence>
             <module name="AnassTouatiCoder_Base"/>
-            <module name="Magento_Framework"/>
         </sequence>
     </module>
 </config>
