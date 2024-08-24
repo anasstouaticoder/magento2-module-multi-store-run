@@ -102,6 +102,8 @@ class RunStoreManager
             $backendFrontName = $deploymentConfig->get('backend/frontName');
             // Using strpos instead of contains to stay compatible with old PHP versions
             $subdomain = parse_url($this->initParams['REQUEST_URI'], PHP_URL_PATH);
+            // Fix php 8 bug $subdomain must have string value all the time
+            $subdomain = $subdomain ?? '';
             if (strpos($subdomain, '/' . $backendFrontName)!== false ||
                 strpos($this->initParams['SERVER_NAME'], 'admin')!== false) {
                 return;
